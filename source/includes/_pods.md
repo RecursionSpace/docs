@@ -1,8 +1,9 @@
 # PODS
 
-## Register a Pod UUID
+## Register a UUID
 
-Registers a new Pod in Recursion.Space by providing a UUID and any optional fields.
+Registers a UUID with Recursion.Space as a valid Pod identifier.
+This step authorizes a Pod UUID under the user's account/API token, so that the device can register itself in the next step.
 
 > `POST` /v1/pods
 
@@ -10,7 +11,7 @@ Registers a new Pod in Recursion.Space by providing a UUID and any optional fiel
 curl -X POST "https://api.recursion.space/v1/pods" \
   -H "Content-Type: application/json" \
   -H "Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
-  -d "uuid=xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxx"
+  -d '{"uuid": "xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxx"}'
 ```
 
 ### Parameters
@@ -21,18 +22,54 @@ curl -X POST "https://api.recursion.space/v1/pods" \
 
 > Example Successful Response (HTTP 201 Created)
 
-```shell
-HTTP/1.1 201 Created
-
+```json
 {
-    "id": 1,
-    "uuid": "xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxx",
-    "nickname": "",
-    "serial": "",
-    "version": "",
-    "status": "0",
-    "connection_last_made": "2025-02-09T05:59:08.947827Z",
-    "snapshot": null,
-    "facility": null
+  "uuid": "xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxx"
 }
 ```
+
+### Returns
+
+| Field  | Type   | Description                        |
+| ------ | ------ | ---------------------------------- |
+| `uuid` | string | The unique identifier for the Pod. |
+
+## Provision a Pod
+
+Provision a Pod with Recursion.Space, this will provide the Pod with a token to use for future requests.
+
+> `POST` /v1/pods/{uuid}/provision
+
+```shell
+curl -X POST "https://api.recursion.space/v1/pods/xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxx/provision" \
+  -H "Content-Type: application/json" \
+  -d '{"serial": "xxxxxxxxxxxx"}'
+```
+
+### Parameters
+
+| Field    | Type   | Required | Description                   |
+| -------- | ------ | -------- | ----------------------------- |
+| `serial` | string | true     | The serial number of the Pod. |
+
+> Example Successful Response (HTTP 201 Created)
+
+```json
+{
+  "uuid": "xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "serial": "xxxxxxxx",
+  "token": "pod_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+}
+```
+
+### Returns
+
+| Field    | Type   | Description                                 |
+| -------- | ------ | ------------------------------------------- |
+| `uuid`   | string | The unique identifier for the Pod.          |
+| `serial` | string | The serial number of the Pod.               |
+| `token`  | string | The Pod's unique token for future requests. |
+
+<aside class="warning">
+The Pod token is unique to each Pod and must be kept secure. If the Pod token is lost or compromised, it cannot be reset. In such cases, you will need to re-provision the Pod by deleting the UUID and re-provisioning the Pod.
+</aside>
