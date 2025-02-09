@@ -11,6 +11,7 @@ includes:
   - errors
   - space
   - modules
+  - pods
 
 search: true
 

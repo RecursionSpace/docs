@@ -74,7 +74,7 @@ curl "https://api.recursion.space/v1/operators/xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxx" 
 ]
 ```
 
-Retrive information for all operators ("admins") for the selected space.
+Retrieve information for all operators ("admins") for the selected space.
 
 ### Returns
 
