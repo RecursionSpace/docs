@@ -359,6 +359,14 @@
                   </li>
               </ul>
           </li>
+          <li>
+            <a href="#pods" class="toc-h1 toc-link" data-title="PODS">PODS</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#register-a-pod-uuid" class="toc-h2 toc-link" data-title="Register a Pod UUID">Register a Pod UUID</a>
+                  </li>
+              </ul>
+          </li>
       </ul>
         <ul class="toc-footer">
             <li><a href='https://recursion.space/dash/'>Sign Up for a Developer Key</a></li>
@@ -554,7 +562,7 @@ All API requests must include the API key and be made over HTTPS, requests that 
   </span><span class="p">},</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre></div>
-<p>Retrive information for all operators (&quot;admins&quot;) for the selected space.</p>
+<p>Retrieve information for all operators (&quot;admins&quot;) for the selected space.</p>
 <h3 id='returns-2'>Returns</h3>
 <table><thead>
 <tr>
@@ -993,7 +1001,50 @@ curl <span class="nt">-X</span> POST <span class="s2">"https://api.recursion.spa
 <td>Username associated with the operators account.</td>
 </tr>
 </tbody></table>
+<h1 id='pods'>PODS</h1><h2 id='register-a-pod-uuid'>Register a Pod UUID</h2>
+<p>Registers a new Pod in Recursion.Space by providing a UUID and any optional fields.</p>
 
+<blockquote>
+<p><code>POST</code> /v1/pods</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> POST <span class="s2">"https://api.recursion.space/v1/pods"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</span> <span class="se">\</span>
+  <span class="nt">-d</span> <span class="s2">"uuid=xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxx"</span>
+</code></pre></div><h3 id='parameters'>Parameters</h3>
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>uuid</code></td>
+<td>string (UUID)</td>
+<td>true</td>
+<td>The unique identifier for the Pod. Must be a valid UUID format.</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Example Successful Response (HTTP 201 Created)</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>HTTP/1.1 201 Created
+
+<span class="o">{</span>
+    <span class="s2">"id"</span>: 1,
+    <span class="s2">"uuid"</span>: <span class="s2">"xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxx"</span>,
+    <span class="s2">"nickname"</span>: <span class="s2">""</span>,
+    <span class="s2">"serial"</span>: <span class="s2">""</span>,
+    <span class="s2">"version"</span>: <span class="s2">""</span>,
+    <span class="s2">"status"</span>: <span class="s2">"0"</span>,
+    <span class="s2">"connection_last_made"</span>: <span class="s2">"2025-02-09T05:59:08.947827Z"</span>,
+    <span class="s2">"snapshot"</span>: null,
+    <span class="s2">"facility"</span>: null
+<span class="o">}</span>
+</code></pre></div>
       </div>
       <div class="dark-box">
           <div class="lang-selector">
