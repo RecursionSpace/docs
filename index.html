@@ -363,7 +363,10 @@
             <a href="#pods" class="toc-h1 toc-link" data-title="PODS">PODS</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#register-a-pod-uuid" class="toc-h2 toc-link" data-title="Register a Pod UUID">Register a Pod UUID</a>
+                    <a href="#register-a-uuid" class="toc-h2 toc-link" data-title="Register a UUID">Register a UUID</a>
+                  </li>
+                  <li>
+                    <a href="#provision-a-pod" class="toc-h2 toc-link" data-title="Provision a Pod">Provision a Pod</a>
                   </li>
               </ul>
           </li>
@@ -1001,8 +1004,9 @@ curl <span class="nt">-X</span> POST <span class="s2">"https://api.recursion.spa
 <td>Username associated with the operators account.</td>
 </tr>
 </tbody></table>
-<h1 id='pods'>PODS</h1><h2 id='register-a-pod-uuid'>Register a Pod UUID</h2>
-<p>Registers a new Pod in Recursion.Space by providing a UUID and any optional fields.</p>
+<h1 id='pods'>PODS</h1><h2 id='register-a-uuid'>Register a UUID</h2>
+<p>Registers a UUID with Recursion.Space as a valid Pod identifier.
+This step authorizes a Pod UUID under the user&#39;s account/API token, so that the device can register itself in the next step.</p>
 
 <blockquote>
 <p><code>POST</code> /v1/pods</p>
@@ -1010,7 +1014,7 @@ curl <span class="nt">-X</span> POST <span class="s2">"https://api.recursion.spa
 <div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> POST <span class="s2">"https://api.recursion.space/v1/pods"</span> <span class="se">\</span>
   <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
   <span class="nt">-H</span> <span class="s2">"Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</span> <span class="se">\</span>
-  <span class="nt">-d</span> <span class="s2">"uuid=xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxx"</span>
+  <span class="nt">-d</span> <span class="s1">'{"uuid": "xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxx"}'</span>
 </code></pre></div><h3 id='parameters'>Parameters</h3>
 <table><thead>
 <tr>
@@ -1031,20 +1035,86 @@ curl <span class="nt">-X</span> POST <span class="s2">"https://api.recursion.spa
 <blockquote>
 <p>Example Successful Response (HTTP 201 Created)</p>
 </blockquote>
-<div class="highlight"><pre class="highlight shell tab-shell"><code>HTTP/1.1 201 Created
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"uuid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxx"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='returns'>Returns</h3>
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>uuid</code></td>
+<td>string</td>
+<td>The unique identifier for the Pod.</td>
+</tr>
+</tbody></table>
+<h2 id='provision-a-pod'>Provision a Pod</h2>
+<p>Provision a Pod with Recursion.Space, this will provide the Pod with a token to use for future requests.</p>
 
-<span class="o">{</span>
-    <span class="s2">"id"</span>: 1,
-    <span class="s2">"uuid"</span>: <span class="s2">"xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxx"</span>,
-    <span class="s2">"nickname"</span>: <span class="s2">""</span>,
-    <span class="s2">"serial"</span>: <span class="s2">""</span>,
-    <span class="s2">"version"</span>: <span class="s2">""</span>,
-    <span class="s2">"status"</span>: <span class="s2">"0"</span>,
-    <span class="s2">"connection_last_made"</span>: <span class="s2">"2025-02-09T05:59:08.947827Z"</span>,
-    <span class="s2">"snapshot"</span>: null,
-    <span class="s2">"facility"</span>: null
-<span class="o">}</span>
-</code></pre></div>
+<blockquote>
+<p><code>POST</code> /v1/pods/{uuid}/provision</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> POST <span class="s2">"https://api.recursion.space/v1/pods/xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxx/provision"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  <span class="nt">-d</span> <span class="s1">'{"serial": "xxxxxxxxxxxx"}'</span>
+</code></pre></div><h3 id='parameters-2'>Parameters</h3>
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>serial</code></td>
+<td>string</td>
+<td>true</td>
+<td>The serial number of the Pod.</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Example Successful Response (HTTP 201 Created)</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"uuid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxx"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"serial"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxxxxxxx"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pod_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='returns-2'>Returns</h3>
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>uuid</code></td>
+<td>string</td>
+<td>The unique identifier for the Pod.</td>
+</tr>
+<tr>
+<td><code>serial</code></td>
+<td>string</td>
+<td>The serial number of the Pod.</td>
+</tr>
+<tr>
+<td><code>token</code></td>
+<td>string</td>
+<td>The Pod&#39;s unique token for future requests.</td>
+</tr>
+</tbody></table>
+
+<aside class="warning">
+The Pod token is unique to each Pod and must be kept secure. If the Pod token is lost or compromised, it cannot be reset. In such cases, you will need to re-provision the Pod by deleting the UUID and re-provisioning the Pod.
+</aside>
+
       </div>
       <div class="dark-box">
           <div class="lang-selector">
